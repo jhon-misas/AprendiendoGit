@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENAP — Escuela Naval de Cadetes «Almirante Padilla»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:  #0a1c30;
+    --navy-mid:   #12283f;
+    --navy-line:  #24405c;
+    --gold:       #c8a24d;
+    --gold-dim:   #8f7638;
+    --paper:      #eef1ea;
+    --slate:      #9fb2c4;
+    --red:        #8c2a2a;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--navy-deep);
+    color:var(--paper);
+    font-family:'Source Sans 3', sans-serif;
+    font-size:16px;
+    line-height:1.65;
+  }
+  ::selection{ background:var(--gold); color:var(--navy-deep); }
+  a{ color:inherit; }
+  h1,h2,h3{ font-family:'Cormorant Garamond', serif; font-weight:600; color:var(--paper); }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 32px; }
+
+  /* ---------------- Top ribbon ---------------- */
+  .ribbon{
+    background:var(--navy-mid);
+    border-bottom:1px solid var(--navy-line);
+    padding:9px 0;
+  }
+  .ribbon .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
+  .ribbon span{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.08em; color:var(--slate); text-transform:uppercase; }
+  .ribbon strong{ color:var(--gold); }
+
+  /* ---------------- Nav ---------------- */
+  nav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(10,28,48,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--navy-line);
+  }
+  nav .wrap{ display:flex; justify-content:space-between; align-items:center; padding:16px 32px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand .mark{ width:34px; height:34px; }
+  .brand-text{ font-family:'Cormorant Garamond', serif; font-size:19px; letter-spacing:0.02em; }
+  .brand-text small{ display:block; font-family:'IBM Plex Mono', monospace; font-size:9px; letter-spacing:0.14em; color:var(--slate); text-transform:uppercase; }
+  nav ul{ list-style:none; display:flex; gap:28px; }
+  nav a{ text-decoration:none; font-size:13px; letter-spacing:0.03em; color:var(--slate); transition:color 160ms; }
+  nav a:hover, nav a:focus-visible{ color:var(--gold); }
+  .nav-toggle{ display:none; }
+
+  /* ---------------- Hero ---------------- */
+  header.hero{
+    position:relative;
+    padding:96px 0 80px;
+    overflow:hidden;
+    border-bottom:1px solid var(--navy-line);
+  }
+  header.hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 78% 20%, rgba(200,162,77,0.10), transparent 55%),
+      radial-gradient(ellipse at 10% 90%, rgba(140,42,42,0.10), transparent 55%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative; z-index:2;
+    display:grid; grid-template-columns:1.3fr 0.9fr; gap:60px; align-items:center;
+  }
+  .eyebrow{
+    display:flex; align-items:center; gap:12px;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.18em;
+    color:var(--gold); text-transform:uppercase; margin-bottom:22px;
+  }
+  .eyebrow::before{ content:''; width:28px; height:1px; background:var(--gold); }
+  .hero h1{ font-size:clamp(38px,5.2vw,60px); line-height:1.08; max-width:640px; }
+  .hero h1 em{ font-style:normal; color:var(--gold); }
+  .hero p.lede{ margin-top:22px; max-width:540px; color:var(--slate); font-size:16px; }
+  .hero-stats{ display:flex; gap:34px; margin-top:36px; flex-wrap:wrap; }
+  .hero-stats div strong{ display:block; font-family:'Cormorant Garamond', serif; font-size:30px; color:var(--gold); }
+  .hero-stats div span{ font-size:11px; color:var(--slate); text-transform:uppercase; letter-spacing:0.06em; }
+
+  /* Compass rose signature */
+  .compass{ width:100%; max-width:340px; margin:0 auto; }
+
+  /* ---------------- Section shell ---------------- */
+  section{ border-bottom:1px solid var(--navy-line); padding:76px 0; }
+  .kicker{ display:flex; align-items:baseline; gap:16px; margin-bottom:38px; }
+  .kicker .tag{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--gold); letter-spacing:0.1em; }
+  .kicker h2{ font-size:32px; }
+  .section-intro{ color:var(--slate); max-width:64ch; margin-bottom:44px; }
+
+  /* ---------------- Mission / Vision ---------------- */
+  .mv-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--navy-line); border:1px solid var(--navy-line); }
+  .mv-card{ background:var(--navy-mid); padding:38px 36px; }
+  .mv-card h3{ font-size:22px; color:var(--gold); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .mv-card p{ color:var(--paper); opacity:0.92; }
+  .mv-card .glyph{ width:20px; height:20px; flex-shrink:0; }
+
+  .faculties{ margin-top:44px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--navy-line); border:1px solid var(--navy-line); }
+  .fac-card{ background:var(--navy-deep); padding:22px 20px; }
+  .fac-card h4{ font-family:'Source Sans 3',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.03em; color:var(--paper); margin-bottom:6px; }
+  .fac-card p{ font-size:12.5px; color:var(--slate); }
+
+  /* ---------------- Ranks ---------------- */
+  .rank-tabs{ display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
+  .rank-tab{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    background:transparent; border:1px solid var(--navy-line); color:var(--slate);
+    padding:9px 16px; cursor:pointer; transition:all 160ms;
+  }
+  .rank-tab.active, .rank-tab:hover{ border-color:var(--gold); color:var(--gold); }
+
+  .rank-table{ width:100%; border-collapse:collapse; display:none; }
+  .rank-table.active{ display:table; }
+  .rank-table th{
+    text-align:left; font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--gold); padding:10px 14px; border-bottom:1px solid var(--navy-line);
+  }
+  .rank-table td{ padding:12px 14px; border-bottom:1px solid var(--navy-line); font-size:13.5px; }
+  .rank-table td.grade{ color:var(--paper); font-weight:600; }
+  .rank-table td.abbr{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:12px; }
+  .rank-table td.tier{ color:var(--slate); font-size:12px; }
+  .rank-table tr:hover td{ background:rgba(200,162,77,0.05); }
+
+  .cadet-path{ margin-top:40px; display:flex; flex-wrap:wrap; gap:0; align-items:stretch; }
+  .cadet-step{
+    flex:1 1 140px; border:1px solid var(--navy-line); padding:16px 14px; position:relative;
+    background:var(--navy-mid);
+  }
+  .cadet-step:not(:last-child)::after{
+    content:'→'; position:absolute; right:-13px; top:50%; transform:translateY(-50%);
+    color:var(--gold); font-size:14px; z-index:2;
+  }
+  .cadet-step .yr{ font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--gold); letter-spacing:0.08em; text-transform:uppercase; }
+  .cadet-step .role{ font-family:'Cormorant Garamond', serif; font-size:17px; margin-top:4px; }
+
+  /* ---------------- Bases navales ---------------- */
+  .bases-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--navy-line); border:1px solid var(--navy-line); }
+  .base-card{ background:var(--navy-deep); padding:26px 26px; }
+  .base-card .name{ font-family:'Cormorant Garamond', serif; font-size:21px; color:var(--paper); }
+  .base-card .loc{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--gold); letter-spacing:0.05em; margin:6px 0 12px; text-transform:uppercase; }
+  .base-card p{ color:var(--slate); font-size:13px; }
+
+  /* ---------------- Fleet ---------------- */
+  .fleet-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:26px; }
+  .ship-card{
+    border:1px solid var(--navy-line); padding:28px;
+    background:linear-gradient(180deg, var(--navy-mid), var(--navy-deep));
+  }
+  .ship-card .kind{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase; }
+  .ship-card h3{ font-size:24px; margin:8px 0 14px; }
+  .ship-card p{ color:var(--slate); font-size:13.5px; margin-bottom:14px; }
+  .ship-specs{ display:flex; flex-wrap:wrap; gap:8px; }
+  .spec{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--paper);
+    border:1px solid var(--navy-line); padding:4px 9px; letter-spacing:0.02em;
+  }
+
+  /* ---------------- Footer ---------------- */
+  footer{ padding:56px 0 70px; }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; align-items:flex-start; }
+  footer .disclaimer{ max-width:600px; color:var(--slate); font-size:12px; line-height:1.8; }
+  footer .disclaimer strong{ color:var(--gold); }
+  footer .fnote{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate); }
+
+  @media (max-width:860px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .compass{ max-width:220px; }
+    .mv-grid, .faculties, .bases-grid{ grid-template-columns:1fr; }
+    .fleet-grid{ grid-template-columns:1fr; }
+    nav ul{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ribbon">
+  <div class="wrap">
+    <span>Cartagena de Indias, Bolívar · Colombia</span>
+    <span><strong>ENAP</strong> — Academia naval y universidad marítima</span>
+  </div>
+</div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" stroke="#c8a24d" stroke-width="1.4"/>
+        <path d="M20 6 L23 18 L20 34 L17 18 Z" fill="#c8a24d"/>
+        <path d="M6 20 L18 17 L34 20 L18 23 Z" fill="#c8a24d" opacity="0.55"/>
+      </svg>
+      <div class="brand-text">Almirante Padilla<small>Escuela Naval de Cadetes</small></div>
+    </div>
+    <ul>
+      <li><a href="#mision">Misión &amp; Visión</a></li>
+      <li><a href="#rangos">Escalafón</a></li>
+      <li><a href="#bases">Bases navales</a></li>
+      <li><a href="#flota">Flota &amp; equipos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Fundada en 1907 · Alma máter naval de Colombia</div>
+      <h1>Formando la <em>oficialidad</em> que custodia los mares, ríos y costas de la nación.</h1>
+      <p class="lede">
+        La Escuela Naval de Cadetes «Almirante Padilla» es, a la vez, la escuela de
+        formación militar naval de la Armada de Colombia y una universidad marítima
+        acreditada en alta calidad, con sede en Cartagena de Indias.
+      </p>
+      <div class="hero-stats">
+        <div><strong>6</strong><span>Facultades académicas</span></div>
+        <div><strong>1935</strong><span>Fundación como escuela de cadetes</span></div>
+        <div><strong>8</strong><span>Programas de pregrado</span></div>
+      </div>
+    </div>
+    <svg class="compass" viewBox="0 0 300 300" fill="none">
+      <circle cx="150" cy="150" r="120" stroke="#24405c" stroke-width="1"/>
+      <circle cx="150" cy="150" r="90" stroke="#24405c" stroke-width="1"/>
+      <g stroke="#c8a24d" stroke-width="1">
+        <line x1="150" y1="20" x2="150" y2="280"/>
+        <line x1="20" y1="150" x2="280" y2="150"/>
+        <line x1="55" y1="55" x2="245" y2="245" stroke-opacity="0.4"/>
+        <line x1="245" y1="55" x2="55" y2="245" stroke-opacity="0.4"/>
+      </g>
+      <path d="M150 40 L165 150 L150 260 L135 150 Z" fill="#c8a24d"/>
+      <path d="M40 150 L150 135 L260 150 L150 165 Z" fill="#eef1ea" opacity="0.85"/>
+      <circle cx="150" cy="150" r="7" fill="#0a1c30" stroke="#c8a24d" stroke-width="2"/>
+      <text x="150" y="30" fill="#eef1ea" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">N</text>
+      <text x="150" y="278" fill="#9fb2c4" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">S</text>
+      <text x="16" y="154" fill="#9fb2c4" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">O</text>
+      <text x="284" y="154" fill="#9fb2c4" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">E</text>
+    </svg>
+  </div>
+</header>
+
+<section id="mision">
+  <div class="wrap">
+    <div class="kicker"><span class="tag">01</span><h2>Misión y visión institucional</h2></div>
+    <p class="section-intro">
+      Como academia naval-militar y como universidad marítima, la ENAP articula
+      dos roles complementarios: formar oficiales para la Armada Nacional y para
+      la Marina Mercante, y consolidarse como referente académico del sector
+      marítimo colombiano.
+    </p>
+    <div class="mv-grid">
+      <div class="mv-card">
+        <h3><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="#c8a24d" stroke-width="1.6"><path d="M12 2 L3 7 v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7Z"/></svg>Misión</h3>
+        <p>
+          Formar integralmente a los Cadetes y Oficiales de la Armada de Colombia y
+          de la Marina Mercante, con fundamento ético, disciplina naval y excelencia
+          académica, para que ejerzan el liderazgo y el conocimiento requeridos en la
+          defensa de la soberanía marítima, fluvial e insular del país y en el
+          desarrollo del sector marítimo nacional.
+        </p>
+      </div>
+      <div class="mv-card">
+        <h3><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="#c8a24d" stroke-width="1.6"><circle cx="12" cy="12" r="3.4"/><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/></svg>Visión</h3>
+        <p>
+          Consolidarse como una institución de educación naval-militar y marítima de
+          alta calidad, reconocida nacional e internacionalmente por la formación de
+          líderes navales y profesionales del mar, y por su aporte a la investigación,
+          la ciencia y la tecnología aplicadas al Poder Naval y Marítimo de Colombia.
+        </p>
+      </div>
+    </div>
+
+    <div class="faculties">
+      <div class="fac-card"><h4>Ciencias Navales</h4><p>Formación de oficiales del cuerpo naval de la Armada.</p></div>
+      <div class="fac-card"><h4>Infantería de Marina</h4><p>Formación de oficiales del cuerpo de Infantería de Marina.</p></div>
+      <div class="fac-card"><h4>Ingeniería</h4><p>Programas de ingeniería naval, electrónica y afines.</p></div>
+      <div class="fac-card"><h4>Administración Marítima</h4><p>Gestión y logística del sector marítimo y portuario.</p></div>
+      <div class="fac-card"><h4>Oceanografía</h4><p>Ciencias del mar aplicadas a la operación naval.</p></div>
+      <div class="fac-card"><h4>Marina Mercante</h4><p>Formación de oficiales para la flota mercante nacional.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="rangos">
+  <div class="wrap">
+    <div class="kicker"><span class="tag">02</span><h2>Escalafón naval</h2></div>
+    <p class="section-intro">
+      La jerarquía de la Armada Nacional se organiza en oficiales y suboficiales,
+      con insignias propias tanto para el cuerpo naval como para el cuerpo de
+      Infantería de Marina, reglamentada por el Decreto 1790 de 2000 y la Ley 1405 de 2010.
+    </p>
+
+    <div class="rank-tabs">
+      <button class="rank-tab active" data-target="t-of-naval">Oficiales · Cuerpo Naval</button>
+      <button class="rank-tab" data-target="t-of-infm">Oficiales · Infantería de Marina</button>
+      <button class="rank-tab" data-target="t-sub-naval">Suboficiales · Cuerpo Naval</button>
+    </div>
+
+    <table class="rank-table active mono" id="t-of-naval">
+      <thead><tr><th>Grado</th><th>Abrev.</th><th>Categoría</th></tr></thead>
+      <tbody>
+        <tr><td class="grade">Almirante</td><td class="abbr">ALM</td><td class="tier">Oficial de insignia</td></tr>
+        <tr><td class="grade">Vicealmirante de Flota</td><td class="abbr">AFL</td><td class="tier">Oficial de insignia</td></tr>
+        <tr><td class="grade">Vicealmirante</td><td class="abbr">VA</td><td class="tier">Oficial de insignia</td></tr>
+        <tr><td class="grade">Contralmirante</td><td class="abbr">CA</td><td class="tier">Oficial de insignia</td></tr>
+        <tr><td class="grade">Capitán de Navío</td><td class="abbr">CN</td><td class="tier">Oficial superior</td></tr>
+        <tr><td class="grade">Capitán de Fragata</td><td class="abbr">CF</td><td class="tier">Oficial superior</td></tr>
+        <tr><td class="grade">Capitán de Corbeta</td><td class="abbr">CC</td><td class="tier">Oficial superior</td></tr>
+        <tr><td class="grade">Teniente de Navío</td><td class="abbr">TN</td><td class="tier">Oficial subalterno</td></tr>
+        <tr><td class="grade">Teniente de Fragata</td><td class="abbr">TF</td><td class="tier">Oficial subalterno</td></tr>
+        <tr><td class="grade">Teniente de Corbeta</td><td class="abbr">TK</td><td class="tier">Oficial subalterno</td></tr>
+      </tbody>
+    </table>
+
+    <table class="rank-table mono" id="t-of-infm">
+      <thead><tr><th>Grado</th><th>Abrev.</th><th>Categoría</th></tr></thead>
+      <tbody>
+        <tr><td class="grade">General</td><td class="abbr">GR</td><td class="tier">Oficial general</td></tr>
+        <tr><td class="grade">Teniente General</td><td class="abbr">TG</td><td class="tier">Oficial general</td></tr>
+        <tr><td class="grade">Mayor General</td><td class="abbr">MG</td><td class="tier">Oficial general</td></tr>
+        <tr><td class="grade">Brigadier General</td><td class="abbr">BG</td><td class="tier">Oficial general</td></tr>
+        <tr><td class="grade">Coronel</td><td class="abbr">CR</td><td class="tier">Oficial superior</td></tr>
+        <tr><td class="grade">Teniente Coronel</td><td class="abbr">TC</td><td class="tier">Oficial superior</td></tr>
+        <tr><td class="grade">Mayor</td><td class="abbr">MY</td><td class="tier">Oficial superior</td></tr>
+        <tr><td class="grade">Capitán</td><td class="abbr">CT</td><td class="tier">Oficial subalterno</td></tr>
+        <tr><td class="grade">Teniente</td><td class="abbr">TE</td><td class="tier">Oficial subalterno</td></tr>
+        <tr><td class="grade">Subteniente</td><td class="abbr">ST</td><td class="tier">Oficial subalterno</td></tr>
+      </tbody>
+    </table>
+
+    <table class="rank-table mono" id="t-sub-naval">
+      <thead><tr><th>Grado</th><th>Abrev.</th><th>Categoría</th></tr></thead>
+      <tbody>
+        <tr><td class="grade">Suboficial Jefe Técnico de Comando Conjunto</td><td class="abbr">SJTCC</td><td class="tier">Suboficial superior</td></tr>
+        <tr><td class="grade">Suboficial Jefe Técnico de Comando</td><td class="abbr">SJTC</td><td class="tier">Suboficial superior</td></tr>
+        <tr><td class="grade">Suboficial Jefe Técnico</td><td class="abbr">SJT</td><td class="tier">Suboficial superior</td></tr>
+        <tr><td class="grade">Suboficial Jefe</td><td class="abbr">SJ</td><td class="tier">Suboficial superior</td></tr>
+        <tr><td class="grade">Suboficial Primero</td><td class="abbr">S1</td><td class="tier">Suboficial</td></tr>
+        <tr><td class="grade">Suboficial Segundo</td><td class="abbr">S2</td><td class="tier">Suboficial</td></tr>
+        <tr><td class="grade">Suboficial Tercero</td><td class="abbr">S3</td><td class="tier">Suboficial</td></tr>
+        <tr><td class="grade">Marinero Primero</td><td class="abbr">MA1</td><td class="tier">Marinería</td></tr>
+        <tr><td class="grade">Marinero Segundo</td><td class="abbr">MA2</td><td class="tier">Marinería</td></tr>
+      </tbody>
+    </table>
+
+    <div class="cadet-path">
+      <div class="cadet-step"><div class="yr">Año 1–2</div><div class="role">Cadete</div></div>
+      <div class="cadet-step"><div class="yr">Año 3–4</div><div class="role">Cadete de curso superior</div></div>
+      <div class="cadet-step"><div class="yr">Previo al grado</div><div class="role">Guardiamarina</div></div>
+      <div class="cadet-step"><div class="yr">Al graduarse</div><div class="role">Subteniente / Teniente de Corbeta</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="bases">
+  <div class="wrap">
+    <div class="kicker"><span class="tag">03</span><h2>Bases navales principales</h2></div>
+    <p class="section-intro">
+      La Armada Nacional despliega su fuerza a través de bases navales distribuidas
+      en el Caribe, el Pacífico y las cuencas fluviales del país, cada una de apoyo
+      logístico a una fuerza naval específica.
+    </p>
+    <div class="bases-grid">
+      <div class="base-card">
+        <div class="name">Base Naval ARC «Bolívar»</div>
+        <div class="loc">BN1 · Cartagena, Bolívar</div>
+        <p>Principal unidad de apoyo logístico en el Caribe colombiano; sede de la Flotilla de Superficie y de los astilleros de Cotecmar.</p>
+      </div>
+      <div class="base-card">
+        <div class="name">Base Naval ARC «Bahía Málaga»</div>
+        <div class="loc">BN2 · Buenaventura, Valle del Cauca</div>
+        <p>Apoyo logístico a la Fuerza Naval del Pacífico, en un punto equidistante de las fronteras con Panamá y Ecuador.</p>
+      </div>
+      <div class="base-card">
+        <div class="name">Base Naval ARC «Leguízamo»</div>
+        <div class="loc">BN3 · Puerto Leguízamo, Putumayo</div>
+        <p>Sostiene las operaciones fluviales de la Armada en la cuenca amazónica y afluentes del sur del país.</p>
+      </div>
+      <div class="base-card">
+        <div class="name">Base Naval ARC «San Andrés»</div>
+        <div class="loc">San Andrés Islas</div>
+        <p>Presencia naval permanente en el Caribe insular, custodiando el archipiélago de San Andrés, Providencia y Santa Catalina.</p>
+      </div>
+      <div class="base-card">
+        <div class="name">Puestos fluviales de Leticia y Puerto Carreño</div>
+        <div class="loc">Amazonas · Orinoquía</div>
+        <p>Unidades fluviales y de Infantería de Marina que proyectan soberanía sobre los ríos Amazonas y Orinoco.</p>
+      </div>
+      <div class="base-card">
+        <div class="name">Escuela Naval «Almirante Padilla»</div>
+        <div class="loc">Isla Manzanillo · Cartagena</div>
+        <p>Sede académica y de formación de la oficialidad, contigua a la Base Naval Bolívar en Cartagena de Indias.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="flota">
+  <div class="wrap">
+    <div class="kicker"><span class="tag">04</span><h2>Flota y equipos de instrucción</h2></div>
+    <p class="section-intro">
+      Los Cadetes se forman navegando en unidades reales de la Armada, desde el
+      buque escuela de vela hasta fragatas y submarinos que integran la flota
+      operativa del país.
+    </p>
+    <div class="fleet-grid">
+      <div class="ship-card">
+        <div class="kind">Buque escuela</div>
+        <h3>ARC «Gloria»</h3>
+        <p>Bergantín-barca de tres palos, buque insignia y embajador de Colombia en puertos del mundo; en él los Cadetes practican navegación astronómica y maniobra a vela.</p>
+        <div class="ship-specs">
+          <span class="spec">23 velas</span>
+          <span class="spec">En servicio desde 1968</span>
+          <span class="spec">Crucero anual de Cadetes</span>
+        </div>
+      </div>
+      <div class="ship-card">
+        <div class="kind">Fragatas</div>
+        <h3>Clase «Almirante Padilla»</h3>
+        <p>Fragatas ligeras multipropósito, columna vertebral de la flota de superficie, empleadas en control marítimo, escolta y proyección naval.</p>
+        <div class="ship-specs">
+          <span class="spec">4 unidades</span>
+          <span class="spec">Vigilancia y control marítimo</span>
+        </div>
+      </div>
+      <div class="ship-card">
+        <div class="kind">Submarinos</div>
+        <h3>Tipo 209</h3>
+        <p>Unidades submarinas de patrulla oceánica, como el ARC «Tayrona», con más de cinco décadas representando la disuasión naval del país.</p>
+        <div class="ship-specs">
+          <span class="spec">Patrulla submarina</span>
+          <span class="spec">Cooperación internacional</span>
+        </div>
+      </div>
+      <div class="ship-card">
+        <div class="kind">Nueva generación</div>
+        <h3>Plataforma Estratégica de Superficie</h3>
+        <p>Programa de fragatas de nueva generación, desarrollado por Cotecmar junto al astillero neerlandés Damen, el proyecto naval más grande construido en Colombia.</p>
+        <div class="ship-specs">
+          <span class="spec">Construcción nacional</span>
+          <span class="spec">Cotecmar · Damen</span>
+        </div>
+      </div>
+      <div class="ship-card">
+        <div class="kind">Patrullaje oceánico</div>
+        <h3>Patrulleras oceánicas (OPV)</h3>
+        <p>Unidades de largo alcance dedicadas a la vigilancia de la Zona Económica Exclusiva, el control de pesca ilegal y la lucha contra el narcotráfico marítimo.</p>
+        <div class="ship-specs">
+          <span class="spec">Guardacostas</span>
+          <span class="spec">Zona económica exclusiva</span>
+        </div>
+      </div>
+      <div class="ship-card">
+        <div class="kind">Unidades fluviales</div>
+        <h3>Lanchas patrulleras de río</h3>
+        <p>Embarcaciones de bajo calado que sostienen la presencia del Estado en los ríos Magdalena, Amazonas, Orinoco y Putumayo.</p>
+        <div class="ship-specs">
+          <span class="spec">Bajo calado</span>
+          <span class="spec">Cuencas fluviales</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="disclaimer">
+      <strong>Nota informativa.</strong> Página de carácter divulgativo elaborada con
+      información pública sobre la Escuela Naval de Cadetes «Almirante Padilla» y la
+      Armada Nacional de Colombia. No es un canal oficial; para trámites, admisiones
+      o información institucional verificada, consulta <span class="mono">escuelanaval.edu.co</span>
+      y <span class="mono">armada.mil.co</span>.
+    </div>
+    <div class="fnote">Cartagena de Indias · Colombia</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.rank-tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.rank-tab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.rank-table').forEach(t=>t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
